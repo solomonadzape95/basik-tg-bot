@@ -10,9 +10,8 @@ const mainMenu = {
     one_time_keyboard: false,
   },
 };
-
-export default async (request, response) => {
-  const msgs = {
+function returnMsgs (first_name){
+  return {
     help: `
       Hey ${first_name}! Here's how I can help you:
 
@@ -81,6 +80,9 @@ Please use the custom keyboard or these commands:
 
   `
   };
+}
+export default async (request, response) => {
+  
   try {
     const bot = new TelegramBot(process.env.TELEGRAM_TOKEN);
 
@@ -94,6 +96,7 @@ Please use the custom keyboard or these commands:
         text,
         from: { first_name },
       } = body.message;
+      const msgs = returnMsgs(first_name)
       let msg, sID;
       switch (text) {
         case "/start":
