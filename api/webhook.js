@@ -3,8 +3,13 @@
 process.env.NTBA_FIX_319 = "test";
 
 import TelegramBot from "node-telegram-bot-api"
-import { helper } from "../handlers";
-
+const mainMenu = {
+  reply_markup: {
+    keyboard: [["🤔 What is Base", "🤝 Community"], ["🆘 Help"]],
+    resize_keyboard: true,
+    one_time_keyboard: false,
+  },
+};
 export default async (request, response) => {
   try {
 
@@ -22,9 +27,17 @@ export default async (request, response) => {
       } = body.message;
 
       
-      const message = text == '/help' ? helper(first_name):`✅ Thanks for your message: *"${text}"*\nHave a great day! 👋🏻${first_name}`;
+      const message = text == '/help' ? `
+Hey ${first_name}! Here's how I can help you:
 
-      await bot.sendMessage(id, message, { parse_mode: "Markdown" });
+🤔 What is Base - Learn about Base
+🤝 Community - Join our vibrant community
+🆘 Help - See this help message again
+
+What would you like to know more about?
+  `:`✅ Thanks for your message: *"${text}"*\nHave a great day! 👋🏻${first_name}`;
+
+      await bot.sendMessage(id, message, { parse_mode: "Markdown" ,...mainMenu});
     }
   } catch (error) {
     console.error("Error sending message");
