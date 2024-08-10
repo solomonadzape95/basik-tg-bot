@@ -108,23 +108,17 @@ export default async (request, response) => {
           msg = msgs.start;
           stickerID ="CAACAgIAAxkBAAEMnnRmtEcsy7ykO2WIFtpwBFJLr1EWIAACMTQAAugboErSr6fEZiaivDUE";
           break;
-        case "/help" || "🆘 Help":
+        case "/help" || `🆘 Help`:
           msg = msgs.help;
-          stickerID =
-            "CAACAgIAAxkBAAEMnoRmtFLleC3c62dM5fdDpNFGPUDKLQAC5zUAAraMQUtiZhcFq2C8BjUE";
           break;
-          case '/docs' || '🤔 What is Base':
+          case '/docs' || `🤔 What is Base`:
             msg = msgs.docs;
-            stickerID =
-              "CAACAgIAAxkBAAEMnoJmtFK-YgAB8HWFjBBInRf1llkVFXoAAsM9AALMEylKhQ_NmhqKA0Y1BA";
             break;
-            case '/community' || '🤝 Community':
+            case '/community' || `🤝 Community`:
               msg = msgs.community;
-              stickerID =
-                "CAACAgIAAxkBAAEMnnZmtEf3kWWENhEZrR9EIn36Vi-B2AACEjUAAsenoUqpHiuzlnPN-jUE";
               break;
         default:
-          msg = msgs.unknown;
+          msg = text;
           stickerID =
             "CAACAgIAAxkBAAEMnoZmtFPq6jKR0wSKZ8lAMryV2u4m-QAC1DAAApkwoUoENX02s8n9lTUE";
           break;
