@@ -7,10 +7,10 @@ const mainMenu = {
   reply_markup: {
     keyboard: [
       [
-        { text: "🤔 What is Base", value: "/docs" },
-        { text: "🤝 Community", value: "/community" },
+        { text: "🤔 What is Base", callback_data: "/docs" },
+        { text: "🤝 Community", callback_data: "/community" },
       ],
-      [{ text: "🆘 Help", value: "/help" }],
+      [{ text: "🆘 Help", callback_data: "/help" }],
     ],
     resize_keyboard: true,
     one_time_keyboard: false,
@@ -28,11 +28,10 @@ function returnMsgs (first_name){
       What would you like to know more about?
   `,
     start: `
-            🚀 *Welcome, ${first_name}!* 🚀
-
-            I'm Basik your Base Onboarding Assistant. Let's get you onchain!
-            Use the menu below to explore what I can do for you.
-      `,
+    🚀 *Welcome, ${first_name}!* 🚀
+    
+    I'm Basik your Base Onboarding Assistant. Let's get you onchain!
+    Use the menu below to explore what I can do for you.`,
     docs: `
 🔵 *What is Base* 🔵
 
@@ -103,30 +102,38 @@ export default async (request, response) => {
         from: { first_name },
       } = body.message;
       const msgs = returnMsgs(first_name)
-      let msg, sID;
+      let msg, stickerID;
       switch (text) {
         case "/start":
           msg = msgs.start;
-          sID ="CAACAgIAAxkBAAEMnnRmtEcsy7ykO2WIFtpwBFJLr1EWIAACMTQAAugboErSr6fEZiaivDUE";
+          stickerID ="CAACAgIAAxkBAAEMnnRmtEcsy7ykO2WIFtpwBFJLr1EWIAACMTQAAugboErSr6fEZiaivDUE";
           break;
         case "/help" || "🆘 Help":
           msg = msgs.help;
+          stickerID =
+            "CAACAgIAAxkBAAEMnoRmtFLleC3c62dM5fdDpNFGPUDKLQAC5zUAAraMQUtiZhcFq2C8BjUE";
           break;
           case '/docs' || '🤔 What is Base':
             msg = msgs.docs;
+            stickerID =
+              "CAACAgIAAxkBAAEMnoJmtFK-YgAB8HWFjBBInRf1llkVFXoAAsM9AALMEylKhQ_NmhqKA0Y1BA";
             break;
             case '/community' || '🤝 Community':
               msg = msgs.community;
+              stickerID =
+                "CAACAgIAAxkBAAEMnnZmtEf3kWWENhEZrR9EIn36Vi-B2AACEjUAAsenoUqpHiuzlnPN-jUE";
               break;
         default:
           msg = msgs.unknown;
+          stickerID =
+            "CAACAgIAAxkBAAEMnoZmtFPq6jKR0wSKZ8lAMryV2u4m-QAC1DAAApkwoUoENX02s8n9lTUE";
           break;
       }
       await bot.sendMessage(id, msg, {
         parse_mode: "Markdown",
         ...mainMenu,
       });
-      if (sID) await bot.sendSticker(id, stickerId);
+      if(stickerID !== '')await bot.sendSticker(id, stickerID);
       // const message = text == '/help' ? :`✅ Thanks for your message: *"${text}"*\nHave a great day! 👋🏻${first_name}`;
 
       // await bot.sendMessage(id, message, { parse_mode: "Markdown" ,...mainMenu});
