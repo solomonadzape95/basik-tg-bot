@@ -21,7 +21,15 @@ export default async (request, response) => {
       } = body.message;
 
       
-      const message = `✅ Thanks for your message: *"${text}"*\nHave a great day! 👋🏻${first_name}`;
+      const message = text == '/help' ? `
+Hey ${first_name}! Here's how I can help you:
+
+🤔 What is Base - Learn about Base
+🤝 Community - Join our vibrant community
+🆘 Help - See this help message again
+
+What would you like to know more about?
+  `:`✅ Thanks for your message: *"${text}"*\nHave a great day! 👋🏻${first_name}`;
 
       await bot.sendMessage(id, message, { parse_mode: "Markdown" });
     }
