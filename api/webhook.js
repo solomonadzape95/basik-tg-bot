@@ -57,7 +57,7 @@ ${first_name}, here are some fantastic resources to get you started on Base:
 Happy learning! 🧠✨
   `,
     community: `
-🌟 *Join Our Amazing Base Community, ${name}!* 🌟
+🌟 *Join Our Amazing Base Community, ${first_name}!* 🌟
 
 Connect with fellow enthusiasts and get support:
 
