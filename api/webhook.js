@@ -3,7 +3,6 @@
 process.env.NTBA_FIX_319 = "test";
 
 import TelegramBot from "node-telegram-bot-api"
-import { handleHelp } from "../handlers";
 
 export default async (request, response) => {
   try {
@@ -21,8 +20,8 @@ export default async (request, response) => {
         from:{first_name}
       } = body.message;
 
-      // const msg = await handleHelp(first_name)
-      const message = `✅ Thanks for your message:sdfghjkdfghjkfdghjkl *"${text}"*\nHave a great day! 👋🏻${first_name}`;
+      
+      const message = `✅ Thanks for your message: *"${text}"*\nHave a great day! 👋🏻${first_name}`;
 
       await bot.sendMessage(id, message, { parse_mode: "Markdown" });
     }

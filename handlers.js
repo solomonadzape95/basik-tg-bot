@@ -47,13 +47,13 @@ What would you like to know more about?
    const stickerId =
       "CAACAgIAAxkBAAEMnoRmtFLleC3c62dM5fdDpNFGPUDKLQAC5zUAAraMQUtiZhcFq2C8BjUE";
   return {msg: helpMessage, sID: stickerId}
-  try{
-     bot.sendMessage(chatId, helpMessage, { parse_mode: "Markdown", ...mainMenu });
+//   try{
+//      bot.sendMessage(chatId, helpMessage, { parse_mode: "Markdown", ...mainMenu });
     
-     bot.sendSticker(chatId, stickerId);
-  }catch(error){
-    handleError(bot, chatId, error);
-}
+//      bot.sendSticker(chatId, stickerId);
+//   }catch(error){
+//     handleError(bot, chatId, error);
+// }
 };
 
 export const handleDocs = (bot) => (msg) => {
