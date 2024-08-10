@@ -7,6 +7,7 @@
 process.env.NTBA_FIX_319 = "test";
 
 import TelegramBot from "node-telegram-bot-api";
+
 const mainMenu = {
   reply_markup: {
     keyboard: [
@@ -20,17 +21,18 @@ const mainMenu = {
     one_time_keyboard: false,
   },
 };
+
 function returnMsgs (first_name){
   return {
     help: `
       Hey ${first_name}!
-  Here's how I can help you:
+Here's how I can help you:
 
   🤔 What is Base - Learn about Base
   🤝 Community - Join our vibrant community
-  🆘 Help - See this help message again
+  🆘 Help - See this help message again.
 
-      What would you like to know more about?
+What would you like to know more about?
   `,
     start: `
     🚀 *Welcome, ${first_name}!* 🚀
