@@ -22,6 +22,7 @@ Basik serves as an entry point for newcomers to the Base network, providing esse
 ## Usage
 
 1. Click on the provided link to access the Basik bot on Telegram.
+[Basik 🤖🟦 Bot](https://t.co/aRBVIO6yag)
 2. Press the 'Start' button to initiate interaction with the bot.
 3. You will see a set of buttons, each describing the type of help or information the bot can provide.
 4. Click on the relevant button to receive the desired information or assistance.
