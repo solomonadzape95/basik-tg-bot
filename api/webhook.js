@@ -7,10 +7,10 @@ const mainMenu = {
   reply_markup: {
     keyboard: [
       [
-        { text: "🤔 What is Base", callback_data: "/docs" },
-        { text: "🤝 Community", callback_data: "/community" },
+        { "text": "🤔 What is Base", "callback_data": "/docs" },
+        { "text": "🤝 Community", "callback_data": "/community" },
       ],
-      [{ text: "🆘 Help", callback_data: "/help" }],
+      [{ "text": "🆘 Help", "callback_data": "/help" }],
     ],
     resize_keyboard: true,
     one_time_keyboard: false,
