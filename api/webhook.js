@@ -108,13 +108,13 @@ export default async (request, response) => {
           msg = msgs.start;
           stickerID ="CAACAgIAAxkBAAEMnnRmtEcsy7ykO2WIFtpwBFJLr1EWIAACMTQAAugboErSr6fEZiaivDUE";
           break;
-        case "/help" || `🆘 Help`:
+        case ("/help" || `🆘 Help`):
           msg = msgs.help;
           break;
-          case '/docs' || `🤔 What is Base`:
+          case ('/docs' || `🤔 What is Base`):
             msg = msgs.docs;
             break;
-            case `🤝 Community`:
+            case ('/community' || `🤝 Community`):
               msg = msgs.community;
               break;
         default:
