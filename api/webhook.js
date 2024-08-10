@@ -23,11 +23,12 @@ const mainMenu = {
 function returnMsgs (first_name){
   return {
     help: `
-      Hey ${first_name}! Here's how I can help you:
+      Hey ${first_name}!
+      Here's how I can help you:
 
-      🤔 What is Base - Learn about Base
-      🤝 Community - Join our vibrant community
-      🆘 Help - See this help message again
+  🤔 What is Base - Learn about Base
+  🤝 Community - Join our vibrant community
+  🆘 Help - See this help message again
 
       What would you like to know more about?
   `,
@@ -71,13 +72,16 @@ Happy learning! 🧠✨
 Connect with fellow enthusiasts and get support:
 
 🔹 [Twitter](https://x.com/baseafricaa?s=21)
-   Follow our Base community for updates, insights, and news. Join the scaling revolution!
+   Follow our Base community for updates, insights, and news.
+   Join the scaling revolution!
 
 🔹 [Whatsapp](https://chat.whatsapp.com/BTuM7DtNZiIHmwf2T5txc8)
-   Join Base enthusiasts on WhatsApp! Connect and Discuss all things Base!!.
+   Join Base enthusiasts on WhatsApp!
+   Connect and Discuss all things Base!!.
 
 🔹 [Discord](https://discord.gg/JNTUSasX)
-   Explore Base with us on Discord. From dev talks to user experiences, We've got it all.
+   Explore Base with us on Discord.
+   From dev talks to exciting discussions, We've got it all.
    
 We can't wait to meet you! 🎉
   `,
