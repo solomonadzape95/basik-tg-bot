@@ -34,9 +34,7 @@ Use the menu below to explore what I can do for you.
   }
 }
 
-export const handleHelp = (bot) => (msg) => {
-  const chatId = msg.chat.id;
-  const name = msg.from.first_name;
+export const handleHelp = async (name) => {
   const helpMessage = `
 Hey ${name}! Here's how I can help you:
 
@@ -46,14 +44,17 @@ Hey ${name}! Here's how I can help you:
 
 What would you like to know more about?
   `;
+   const stickerId =
+      "CAACAgIAAxkBAAEMnoRmtFLleC3c62dM5fdDpNFGPUDKLQAC5zUAAraMQUtiZhcFq2C8BjUE";
+  return {msg: helpMessage, sID: stickerId}
   try{
      bot.sendMessage(chatId, helpMessage, { parse_mode: "Markdown", ...mainMenu });
-     const stickerId =
-      "CAACAgIAAxkBAAEMnoRmtFLleC3c62dM5fdDpNFGPUDKLQAC5zUAAraMQUtiZhcFq2C8BjUE";
+    
      bot.sendSticker(chatId, stickerId);
   }catch(error){
     handleError(bot, chatId, error);
-}};
+}
+};
 
 export const handleDocs = (bot) => (msg) => {
   const chatId = msg.chat.id;
