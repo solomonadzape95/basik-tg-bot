@@ -33,7 +33,18 @@ Use the menu below to explore what I can do for you.
     handleError(bot, chatId, error);
   }
 }
+export const helper = (name)=>{
+return `
+Hey ${name}! Here's how I can help you:
 
+🤔 What is Base - Learn about Base
+🤝 Community - Join our vibrant community
+🆘 Help - See this help message again
+
+What would you like to know more about?
+  `;
+
+}
 export const handleHelp = async (name) => {
   const helpMessage = `
 Hey ${name}! Here's how I can help you:
