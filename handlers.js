@@ -4,8 +4,8 @@ import path, { basename } from "path";
 const mainMenu = {
   reply_markup: {
     keyboard: [
-      ["🤔 What is Base", "🤝 Community"],
-      ["🆘 Help"],
+      [{text: "🤔 What is Base", value: '/docs'}, {text:"🤝 Community",value:'/community'}],
+      [{text:"🆘 Help", value: '/help'}],
     ],
     resize_keyboard: true,
     one_time_keyboard: false,

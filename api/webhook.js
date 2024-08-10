@@ -5,7 +5,13 @@ process.env.NTBA_FIX_319 = "test";
 import TelegramBot from "node-telegram-bot-api";
 const mainMenu = {
   reply_markup: {
-    keyboard: [["🤔 What is Base", "🤝 Community"], ["🆘 Help"]],
+    keyboard: [
+      [
+        { text: "🤔 What is Base", value: "/docs" },
+        { text: "🤝 Community", value: "/community" },
+      ],
+      [{ text: "🆘 Help", value: "/help" }],
+    ],
     resize_keyboard: true,
     one_time_keyboard: false,
   },
@@ -101,8 +107,7 @@ export default async (request, response) => {
       switch (text) {
         case "/start":
           msg = msgs.start;
-          sID =
-            "CAACAgIAAxkBAAEMnnRmtEcsy7ykO2WIFtpwBFJLr1EWIAACMTQAAugboErSr6fEZiaivDUE";
+          sID ="CAACAgIAAxkBAAEMnnRmtEcsy7ykO2WIFtpwBFJLr1EWIAACMTQAAugboErSr6fEZiaivDUE";
           break;
         case "/help" || "🆘 Help":
           msg = msgs.help;
@@ -121,7 +126,7 @@ export default async (request, response) => {
         parse_mode: "Markdown",
         ...mainMenu,
       });
-      if (sID) await bot.sendSticker(chatId, stickerId);
+      if (sID) await bot.sendSticker(id, stickerId);
       // const message = text == '/help' ? :`✅ Thanks for your message: *"${text}"*\nHave a great day! 👋🏻${first_name}`;
 
       // await bot.sendMessage(id, message, { parse_mode: "Markdown" ,...mainMenu});
