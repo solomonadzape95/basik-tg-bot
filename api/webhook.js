@@ -96,7 +96,7 @@ export default async (request, response) => {
 
     // Ensure its a message
     if (body.message) {
-      const {
+      let {
         chat: { id },
         text,
         from: { first_name },
