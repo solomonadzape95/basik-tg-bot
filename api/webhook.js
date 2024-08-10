@@ -103,18 +103,26 @@ export default async (request, response) => {
       } = body.message;
       const msgs = returnMsgs(first_name)
       let msg, stickerID;
+      text =
+        text === "🆘 Help"
+          ? "/help"
+          : text === "🤔 What is Base"
+          ? "/docs"
+          : text === "🤝 Community"
+          ? "/community"
+          : text;
       switch (text) {
         case "/start":
           msg = msgs.start;
           stickerID ="CAACAgIAAxkBAAEMnnRmtEcsy7ykO2WIFtpwBFJLr1EWIAACMTQAAugboErSr6fEZiaivDUE";
           break;
-        case ("/help" || `🆘 Help`):
+        case "/help" :
           msg = msgs.help;
           break;
-          case ('/docs' || `🤔 What is Base`):
+          case '/docs':
             msg = msgs.docs;
             break;
-            case ('/community' || `🤝 Community`):
+            case '/community':
               msg = msgs.community;
               break;
         default:
