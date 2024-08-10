@@ -24,7 +24,7 @@ function returnMsgs (first_name){
   return {
     help: `
       Hey ${first_name}!
-      Here's how I can help you:
+  Here's how I can help you:
 
   🤔 What is Base - Learn about Base
   🤝 Community - Join our vibrant community
