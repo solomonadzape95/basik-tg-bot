@@ -114,13 +114,11 @@ export default async (request, response) => {
           case '/docs' || `🤔 What is Base`:
             msg = msgs.docs;
             break;
-            case '/community' || `🤝 Community`:
+            case `🤝 Community`:
               msg = msgs.community;
               break;
         default:
           msg = text;
-          stickerID =
-            "CAACAgIAAxkBAAEMnoZmtFPq6jKR0wSKZ8lAMryV2u4m-QAC1DAAApkwoUoENX02s8n9lTUE";
           break;
       }
       await bot.sendMessage(id, msg, {
