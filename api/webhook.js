@@ -1,3 +1,7 @@
+// Sorry for the clutter...
+// just Compiled everything into one file
+// i'll separate it later 
+// also i'll be adding some more features later 
 // https://github.com/yagop/node-telegram-bot-api/issues/319#issuecomment-324963294
 // Fix error with Promise cancellation
 process.env.NTBA_FIX_319 = "test";
@@ -30,7 +34,8 @@ function returnMsgs (first_name){
     start: `
     🚀 *Welcome, ${first_name}!* 🚀
     
-    I'm Basik your Base Onboarding Assistant. Let's get you onchain!
+    I'm Basik your Base Onboarding Assistant.
+    Let's get you onchain!
     Use the menu below to explore what I can do for you.`,
     docs: `
 🔵 *What is Base* 🔵
@@ -45,7 +50,7 @@ Base is a Layer 2 (L2) scaling solution for Ethereum, designed to improve transa
 4. **Open-source**: Designed as a collaborative, open-source project
 5. **Integration**: Closely integrated with Coinbase's products
 6. **Ecosystem**: Supports various dApps and aims to foster a growing ecosystem
-7. **Interoperability**: Designed to work well with other L2 solutions and the Ethereum ecosystem
+7. **Interaction**: Designed to work well with other L2 solutions and the Ethereum ecosystem
 
 ${first_name}, here are some fantastic resources to get you started on Base:
 
@@ -66,13 +71,13 @@ Happy learning! 🧠✨
 Connect with fellow enthusiasts and get support:
 
 🔹 [Twitter](https://x.com/baseafricaa?s=21)
-   Stay updated with the latest news!
+   Follow our Base community for updates, insights, and news. Join the scaling revolution!
 
 🔹 [Whatsapp](https://chat.whatsapp.com/BTuM7DtNZiIHmwf2T5txc8)
-   Dive into discussions and tutorials!
+   Join Base enthusiasts on WhatsApp! Connect and Discuss all things Base!!.
 
 🔹 [Discord](https://discord.gg/JNTUSasX)
-   Real-time chats and instant help!
+   Explore Base with us on Discord. From dev talks to user experiences, We've got it all.
    
 We can't wait to meet you! 🎉
   `,
@@ -83,7 +88,7 @@ Please use the custom keyboard or these commands:
 /start - Open the main menu
 /help - Open the help menu
 
-  `
+  `,
   };
 }
 export default async (request, response) => {
@@ -126,7 +131,7 @@ export default async (request, response) => {
               msg = msgs.community;
               break;
         default:
-          msg = text;
+          msg = msgs.unknown;
           break;
       }
       await bot.sendMessage(id, msg, {
@@ -134,9 +139,6 @@ export default async (request, response) => {
         ...mainMenu,
       });
       if(stickerID !== '')await bot.sendSticker(id, stickerID);
-      // const message = text == '/help' ? :`✅ Thanks for your message: *"${text}"*\nHave a great day! 👋🏻${first_name}`;
-
-      // await bot.sendMessage(id, message, { parse_mode: "Markdown" ,...mainMenu});
     }
   } catch (error) {
     console.error("Error sending message");
