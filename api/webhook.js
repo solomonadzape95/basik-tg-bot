@@ -40,15 +40,12 @@ You can also ask me anything about Base or blockchain technology, and I'll do my
 
 What would you like to know more about?
     `,
-    start: `
-    🚀 *Welcome, ${first_name}!* 🚀
-    
+    start:
+    `🚀 Welcome, ${first_name}!🚀
     I'm Basik your Base Onboarding Assistant.
     Let's get you onchain!
     Use the menu below to explore what I can do for you.
-    
-    You can also ask me anything about Base or blockchain technology, and I'll do my best to help!
-    `,
+    You can also ask me anything about Base or blockchain technology, and I'll do my best to help!`,
     docs: `
 🔵 *What is Base* 🔵
 
@@ -110,32 +107,27 @@ const userConversations = {};
 
 async function getGeminiResponse(userId, userInput) {
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-  if(!userConversations[userId]) userConversations[userId] = [
-    {
-      role: "user",
-      parts:[{text:
-        "You are Basik, a Telegram bot that helps people understand and use Base, a Layer 2 blockchain solution, and blockchain technology in general. Always be helpful, concise, and focus on blockchain-related topics. If asked about unrelated topics, always answer correctly and briefly and then politely redirect the conversation to blockchain."}],
-    },
-  ];
+
+  if (!userConversations[userId]) {
+    userConversations[userId] = [];
+  }
+
   const chat = model.startChat({
     history: userConversations[userId],
   });
-  
-  let prompt = userInput;
+   let prompt = "You are Basik, a Telegram bot that helps people understand and use Base, a Layer 2 blockchain solution, and blockchain technology in general" + userInput;
   const result = await chat.sendMessage(prompt);
   const response = result.response.text();
 
-  userConversations[userId].push({ role: "user", parts: userInput });
+  // Update conversation history
+  userConversations[userId].push({ role: "user", parts:[{ text: userInput }]});
   userConversations[userId].push({ role: "model", parts: response });
 
-  // Limit convo history
-  if (userConversations[userId].length > 22) {
-    userConversations[userId] = [
-      userConversations[userId][0],
-      ...userConversations[userId].slice(-20),
-    ];
+  // Limit history to last 20 messages
+  if (userConversations[userId].length > 20) {
+    userConversations[userId] = userConversations[userId].slice(-20);
   }
-  console.log(JSON.stringify(userConversations[userId]))
+
   return response;
 }
 export default async (request, response) => {
