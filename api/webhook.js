@@ -1,28 +1,32 @@
 // Sorry for the clutter...
 // just Compiled everything into one file
-// i'll separate it later 
-// also i'll be adding some more features later 
+// i'll separate it later
+// also i'll be adding some more features later
 // https://github.com/yagop/node-telegram-bot-api/issues/319#issuecomment-324963294
 // Fix error with Promise cancellation
 process.env.NTBA_FIX_319 = "test";
 
 import TelegramBot from "node-telegram-bot-api";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import telegramifyMarkdown from 'telegramify-markdown'
+
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 const mainMenu = {
   reply_markup: {
     keyboard: [
       [
-        { "text": "🤔 What is Base", "callback_data": "/docs" },
-        { "text": "🤝 Community", "callback_data": "/community" },
+        { text: "🤔 What is Base"},
+        { text: "🤝 Community"},
       ],
-      [{ "text": "🆘 Help", "callback_data": "/help" }],
+      [{ text: "🆘 Help"}],
     ],
     resize_keyboard: true,
     one_time_keyboard: false,
   },
 };
 
-function returnMsgs (first_name){
+function returnMsgs(first_name) {
   return {
     help: `
       Hey ${first_name}!
@@ -32,14 +36,19 @@ Here's how I can help you:
   🤝 Community - Join our vibrant community
   🆘 Help - See this help message again.
 
+You can also ask me anything about Base or blockchain technology, and I'll do my best to help!
+
 What would you like to know more about?
-  `,
+    `,
     start: `
     🚀 *Welcome, ${first_name}!* 🚀
     
     I'm Basik your Base Onboarding Assistant.
     Let's get you onchain!
-    Use the menu below to explore what I can do for you.`,
+    Use the menu below to explore what I can do for you.
+    
+    You can also ask me anything about Base or blockchain technology, and I'll do my best to help!
+    `,
     docs: `
 🔵 *What is Base* 🔵
 
@@ -67,7 +76,7 @@ ${first_name}, here are some fantastic resources to get you started on Base:
    For when you're ready to build!
 
 Happy learning! 🧠✨
-  `,
+    `,
     community: `
 🌟 *Join Our Amazing Base Community, ${first_name}!* 🌟
 
@@ -86,7 +95,7 @@ Connect with fellow enthusiasts and get support:
    From dev talks to exciting discussions, We've got it all.
    
 We can't wait to meet you! 🎉
-  `,
+    `,
     unknown: `
 I'm sorry, but I didn't understand that input. 
 Please use the custom keyboard or these commands:
@@ -94,15 +103,45 @@ Please use the custom keyboard or these commands:
 /start - Open the main menu
 /help - Open the help menu
 
-  `,
+    `,
   };
 }
-export default async (request, response) => {
+const userConversations = {};
+
+async function getGeminiResponse(userId, userInput) {
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  if(!userConversations[userId]) userConversations[userId] = [
+    {
+      role: "user",
+      parts:[{text:
+        "You are Basik, a Telegram bot that helps people understand and use Base, a Layer 2 blockchain solution, and blockchain technology in general. Always be helpful, concise, and focus on blockchain-related topics. If asked about unrelated topics, always answer correctly and briefly and then politely redirect the conversation to blockchain."}],
+    },
+  ];
+  const chat = model.startChat({
+    history: userConversations[userId],
+  });
   
+  let prompt = userInput;
+  const result = await chat.sendMessage(prompt);
+  const response = result.response.text();
+
+  userConversations[userId].push({ role: "user", parts: userInput });
+  userConversations[userId].push({ role: "model", parts: response });
+
+  // Limit convo history
+  if (userConversations[userId].length > 22) {
+    userConversations[userId] = [
+      userConversations[userId][0],
+      ...userConversations[userId].slice(-20),
+    ];
+  }
+  console.log(JSON.stringify(userConversations[userId]))
+  return response;
+}
+export default async (request, response) => {
   try {
     const bot = new TelegramBot(process.env.TELEGRAM_TOKEN);
 
-    // Retrieve the POST request body from Telegram
     const { body } = request;
 
     // Ensure its a message
@@ -110,10 +149,10 @@ export default async (request, response) => {
       let {
         chat: { id },
         text,
-        from: { first_name },
+        from: { first_name, id: userId },
       } = body.message;
-      const msgs = returnMsgs(first_name)
-      let msg, stickerID;
+      const msgs = returnMsgs(first_name);
+      let msg, stickerID = '';
       text =
         text === "🆘 Help"
           ? "/help"
@@ -122,29 +161,33 @@ export default async (request, response) => {
           : text === "🤝 Community"
           ? "/community"
           : text;
+     await bot.sendChatAction(id, "typing");
       switch (text) {
         case "/start":
           msg = msgs.start;
-          stickerID ="CAACAgIAAxkBAAEMnnRmtEcsy7ykO2WIFtpwBFJLr1EWIAACMTQAAugboErSr6fEZiaivDUE";
+          stickerID =
+            "CAACAgIAAxkBAAEMnnRmtEcsy7ykO2WIFtpwBFJLr1EWIAACMTQAAugboErSr6fEZiaivDUE";
           break;
-        case "/help" :
+        case "/help":
           msg = msgs.help;
           break;
-          case '/docs':
-            msg = msgs.docs;
-            break;
-            case '/community':
-              msg = msgs.community;
-              break;
+        case "/docs":
+          msg = msgs.docs;
+          break;
+        case "/community":
+          msg = msgs.community;
+          break;
         default:
-          msg = msgs.unknown;
+          await bot.sendChatAction(id, "typing");
+          msg = await getGeminiResponse(userId, text);
           break;
       }
-      await bot.sendMessage(id, msg, {
-        parse_mode: "Markdown",
+      const editedMsg = telegramifyMarkdown(msg)
+      await bot.sendMessage(id, editedMsg, {
+        parse_mode: "MarkdownV2",
         ...mainMenu,
       });
-      if(stickerID !== '')await bot.sendSticker(id, stickerID);
+      if (stickerID !== "") await bot.sendSticker(id, stickerID);
     }
   } catch (error) {
     console.error("Error sending message");

@@ -11,7 +11,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@google/generative-ai": "^0.17.0",
     "@ngrok/ngrok": "^1.4.1",
-    "node-telegram-bot-api": "^0.66.0"
+    "axios": "^1.7.4",
+    "file-type": "^19.4.1",
+    "node-telegram-bot-api": "^0.66.0",
+    "telegramify-markdown": "^1.2.2"
   }
 }
