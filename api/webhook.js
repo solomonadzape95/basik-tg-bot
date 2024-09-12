@@ -15,11 +15,8 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const mainMenu = {
   reply_markup: {
     keyboard: [
-      [
-        { text: "🤔 What is Base"},
-        { text: "🤝 Community"},
-      ],
-      [{ text: "🆘 Help"}],
+      [{ text: "🤔 What is Base" }, { text: "🤝 Community" }],
+      [{ text: "🆘 Help" }, { text: "❓ FAQ" }],
     ],
     resize_keyboard: true,
     one_time_keyboard: false,
@@ -28,20 +25,21 @@ const mainMenu = {
 
 function returnMsgs(first_name) {
   return {
-    help: `
-      Hey ${first_name}!
-Here's how I can help you:
-
+    help: `Hey ${first_name}!
+Here's how I can help you
   🤔 What is Base - Learn about Base
   🤝 Community - Join our vibrant community
+  ❓ FAQ - Get answers to other users' most asked questions
   🆘 Help - See this help message again.
 
 You can also ask me anything about Base or blockchain technology, and I'll do my best to help!
 
 What would you like to know more about?
     `,
-    start:
-    `🚀 Welcome, ${first_name}!🚀
+    faq: `Have some questions ${first_name} ?
+    Which of these do you need answers to?
+    P.S if you can't find your question below, you can type it out so I can answer it`,
+    start: `🚀 Welcome, ${first_name}!🚀
     I'm Basik your Base Onboarding Assistant.
     Let's get you onchain!
     Use the menu below to explore what I can do for you.
@@ -65,7 +63,7 @@ ${first_name}, here are some fantastic resources to get you started on Base:
 
 🔗 [Official Site](https://base.org/)
    From zero to hero in no time!
-   
+
 🔗 [Documentation](https://docs.base.org/)
    Your go-to guide for all things Base
 
@@ -90,11 +88,11 @@ Connect with fellow enthusiasts and get support:
 🔹 [Discord](https://discord.gg/JNTUSasX)
    Explore Base with us on Discord.
    From dev talks to exciting discussions, We've got it all.
-   
+
 We can't wait to meet you! 🎉
     `,
     unknown: `
-I'm sorry, but I didn't understand that input. 
+I'm sorry, but I didn't understand that input.
 Please use the custom keyboard or these commands:
 
 /start - Open the main menu
@@ -115,12 +113,17 @@ async function getGeminiResponse(userId, userInput) {
   const chat = model.startChat({
     history: userConversations[userId],
   });
-   let prompt = "You are Basik, a Telegram bot that helps people understand and use Base, a Layer 2 blockchain solution, and blockchain technology in general" + userInput;
+  let prompt =
+    "You are Basik, a Telegram bot that helps people understand and use Base, a Layer 2 blockchain solution, and blockchain technology in general" +
+    userInput;
   const result = await chat.sendMessage(prompt);
   const response = result.response.text();
 
   // Update conversation history
-  userConversations[userId].push({ role: "user", parts:[{ text: userInput }]});
+  userConversations[userId].push({
+    role: "user",
+    parts: [{ text: userInput }],
+  });
   userConversations[userId].push({ role: "model", parts: response });
 
   // Limit history to last 20 messages
@@ -143,8 +146,9 @@ export default async (request, response) => {
         text,
         from: { first_name, id: userId },
       } = body.message;
-      const msgs = returnMsgs(first_name);
-      let msg, stickerID = '';
+      const msgs = returnMsgs(String(first_name));
+      let msg,
+        stickerID = "";
       text =
         text === "🆘 Help"
           ? "/help"
@@ -152,8 +156,10 @@ export default async (request, response) => {
           ? "/docs"
           : text === "🤝 Community"
           ? "/community"
+          : text === "❓ FAQ"
+          ? "/faq"
           : text;
-     await bot.sendChatAction(id, "typing");
+      await bot.sendChatAction(id, "typing");
       switch (text) {
         case "/start":
           msg = msgs.start;
@@ -169,12 +175,15 @@ export default async (request, response) => {
         case "/community":
           msg = msgs.community;
           break;
+        case "/faq":
+          msg = msgs.faq;
+          break;
         default:
           await bot.sendChatAction(id, "typing");
           msg = await getGeminiResponse(userId, text);
           break;
       }
-      const editedMsg = telegramifyMarkdown(msg)
+      const editedMsg = telegramifyMarkdown(msg);
       await bot.sendMessage(id, editedMsg, {
         parse_mode: "MarkdownV2",
         ...mainMenu,

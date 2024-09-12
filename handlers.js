@@ -5,7 +5,7 @@ const mainMenu = {
   reply_markup: {
     keyboard: [
       [{text: "🤔 What is Base", value: '/docs'}, {text:"🤝 Community",value:'/community'}],
-      [{text:"🆘 Help", value: '/help'}],
+      [{text:"🆘 Help", value: '/help'},{text:"💳 Wallets", value: '/wallet'}],
     ],
     resize_keyboard: true,
     one_time_keyboard: false,
@@ -60,7 +60,7 @@ What would you like to know more about?
   return {msg: helpMessage, sID: stickerId}
 //   try{
 //      bot.sendMessage(chatId, helpMessage, { parse_mode: "Markdown", ...mainMenu });
-    
+
 //      bot.sendSticker(chatId, stickerId);
 //   }catch(error){
 //     handleError(bot, chatId, error);
@@ -77,7 +77,7 @@ Base is a Layer 2 (L2) scaling solution for Ethereum, designed to improve transa
 
  *Key Features*
 
-1. **Technology**: Optimistic Rollup chain
+1. **Tech**: Optimistic Rollup chain
 2. **Development**: Initially developed by Coinbase
 3. **Purpose**: Faster and cheaper transactions while maintaining Ethereum compatibility
 4. **Open-source**: Designed as a collaborative, open-source project
@@ -89,7 +89,7 @@ ${name}, here are some fantastic resources to get you started on Base:
 
 🔗 [Official Site](https://base.org/)
    From zero to hero in no time!
-   
+
 🔗 [Documentation](https://docs.base.org/)
    Your go-to guide for all things Base
 
@@ -107,7 +107,7 @@ Happy learning! 🧠✨
     //     const stickerId =
     //   "CAACAgIAAxkBAAEMnoJmtFK-YgAB8HWFjBBInRf1llkVFXoAAsM9AALMEylKhQ_NmhqKA0Y1BA";
     // await bot.sendSticker(chatId, stickerId);
-  } 
+  }
     // const imagePath = path.join(process.cwd(), "assets", "base.jpg");
     // await bot.sendPhoto(chatId, imagePath, {
     //   caption: "Base Network",
@@ -133,7 +133,7 @@ Connect with fellow enthusiasts and get support:
 
 🔹 [Discord](https://discord.gg/JNTUSasX)
    Real-time chats and instant help!
-   
+
 We can't wait to meet you! 🎉
   `;
 
@@ -168,7 +168,7 @@ export const handleUnrecognized = (bot) => (msg) => {
       ].includes(msg.text))
   ) return
   const unrecognizedMessage = `
-I'm sorry, but I didn't understand that input. 
+I'm sorry, but I didn't understand that input.
 Please use the custom keyboard or these commands:
 
 /start - Open the main menu
